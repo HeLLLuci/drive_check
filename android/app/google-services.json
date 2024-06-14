@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "964801741460",
+    "project_id": "drivecheck-f23ac",
+    "storage_bucket": "drivecheck-f23ac.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964801741460:android:8a58bb50a9897534b6ea81",
+        "android_client_info": {
+          "package_name": "com.example.drive_check"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1eOAioxUc6TKtEyWOEY0P4Mol-IPwFbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
