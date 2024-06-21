@@ -8,7 +8,7 @@ class PostSiteData extends StatelessWidget {
       step: '3',
       siteType: 'PostSite',
       collectionName: 'postTestData',
-      imageKeys: ['powerCable', 'siteLeaving', 'cabPhoto', 'cabDriverDL', 'RCcab'],
+      imageKeys: ['power cable', 'Power cable readings', 'Site leaving selfie', 'cab', 'cab driver DL', 'RC with full cab'],
     );
   }
 }

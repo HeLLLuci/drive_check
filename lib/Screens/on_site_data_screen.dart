@@ -8,7 +8,7 @@ class OnSiteData extends StatelessWidget {
       step: '2',
       siteType: 'OnSite',
       collectionName: 'onTestData',
-      imageKeys: ['pole', 'odf', 'joint'],
+      imageKeys: ['Selfie on site', 'wearing PPE kit', 'POD', 'All document', 'Full tower', 'Site in wide angle', 'OHS Status screenshot', 'PTW screenshot', 'Full team wearing PPE kit', 'TBT', 'all equipment & material', 'Entire tower', 'material required', 'installation done'],
     );
   }
 }

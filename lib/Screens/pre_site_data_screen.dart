@@ -8,7 +8,7 @@ class PreSiteData extends StatelessWidget {
       step: '1',
       siteType: 'PreSite',
       collectionName: 'preTestData',
-      imageKeys: ['pole', 'odf', 'joint'],
+      imageKeys: ['Selfie in Room','All PPE kit Equipments', 'Handset with holder', 'Selfie With Cab', 'odometer', 'Inside Cab', 'Outside cab', 'No. plate of cab', 'Full cab', 'Insurance Documents', 'RC', 'Driving License'],
     );
   }
 }
