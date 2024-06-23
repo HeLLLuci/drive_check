@@ -32,7 +32,8 @@ class TextFields extends StatelessWidget {
 class RegisterFields extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
-  const RegisterFields({super.key, required this.controller, required this.labelText});
+  final TextInputType type;
+  const RegisterFields({super.key, required this.controller, required this.labelText, required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class RegisterFields extends StatelessWidget {
                 color: Color(0xFF159757),
               ),
               borderRadius: BorderRadius.circular(10)),
-          labelText: "Enter Full Name",
+          labelText: labelText,
           floatingLabelStyle: TextStyle(
               color: Color(0xFF159757)),
           focusedBorder: OutlineInputBorder(
@@ -52,7 +53,7 @@ class RegisterFields extends StatelessWidget {
                 color: Color(0xFF159757),
               ),
               borderRadius: BorderRadius.circular(10))),
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: type,
     );
   }
 }

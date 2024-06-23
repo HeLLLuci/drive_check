@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:drive_check/Widgets/text_fields.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:drive_check/Screens/login.dart';
 import 'package:drive_check/Widgets/Button.dart';
@@ -31,11 +30,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        scrolledUnderElevation: 0,
-      ),
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          automaticallyImplyLeading: false,
+          scrolledUnderElevation: 0,
+        ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -92,7 +91,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      RegisterFields(controller: nameController, labelText: "Enter Name"),
+                      TextFormField(
+                        controller: nameController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF159757),
+                                ),
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: "Enter Full Name",
+                            floatingLabelStyle: TextStyle(
+                                color: Color(0xFF159757)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF159757),
+                                ),
+                                borderRadius: BorderRadius.circular(10))),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -133,7 +149,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Color(0xFF159757),
                                 ),
                                 borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.emailAddress,
                       ),
                       SizedBox(
                         height: 10,
@@ -209,8 +225,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
                         else{
                           MotionToast.error(
-                          title: Text("Oops!"),
-                          description: Text("Please select profile picture")
+                              title: Text("Oops!"),
+                              description: Text("Please select profile picture")
                           ).show(context);
                         }
                       }
