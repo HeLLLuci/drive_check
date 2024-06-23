@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drive_check/Widgets/text_fields.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:drive_check/Screens/login.dart';
 import 'package:drive_check/Widgets/Button.dart';
@@ -91,24 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       SizedBox(
                         height: 20,
                       ),
-                      TextFormField(
-                        controller: nameController,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFF159757),
-                                ),
-                                borderRadius: BorderRadius.circular(10)),
-                            labelText: "Enter Full Name",
-                            floatingLabelStyle: TextStyle(
-                                color: Color(0xFF159757)),
-                            focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Color(0xFF159757),
-                                ),
-                                borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
+                      RegisterFields(controller: nameController, labelText: "Enter Name"),
                       SizedBox(
                         height: 10,
                       ),
@@ -149,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Color(0xFF159757),
                                 ),
                                 borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.phone,
                       ),
                       SizedBox(
                         height: 10,
