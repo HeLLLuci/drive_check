@@ -1,4 +1,4 @@
-import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_check/Screens/pre_site_form.dart';
 import 'package:get/get.dart';
@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class MyTaskController extends GetxController {
   RxList<DocumentSnapshot> allTasks = RxList<DocumentSnapshot>();
+  Rx<String>? id = "".obs;
   String? employeeName;
 
   @override
@@ -18,6 +19,7 @@ class MyTaskController extends GetxController {
   Future<void> fetchEmployeeName() async {
     try {
       final user = FirebaseAuth.instance.currentUser;
+      id?.value=user!.uid;
       if (user == null) return;
 
       // Fetch document from 'users' collection based on current user's UID
@@ -61,11 +63,15 @@ class MyTaskController extends GetxController {
     try {
       await FirebaseFirestore.instance.collection('siteAllocation').doc(taskId).update({
         'Acceptance': "Accepted",
-      }).then((_){
-        Get.snackbar('Done','Task $taskId accepted');
-        Get.to(()=>PreSiteForm(taskId: taskId,));
+      });
+      print("UID is: ${id?.value}");
+      await FirebaseFirestore.instance.collection('users').doc(id?.value).update(
+          {'state': 'preSite', 'taskId': taskId},).then((_){
+          Get.snackbar('Done','Task $taskId accepted');
+          Get.to(()=>PreSiteForm(taskId: taskId,));
       });
     } catch (e) {
+      print(e);
       Get.snackbar('Oops!','Error accepting task: $e');
     }
   }

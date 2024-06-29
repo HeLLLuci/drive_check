@@ -5,12 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import '../../Database/get_employee_data.dart';
 
-import '../Database/get_employee_data.dart';
-
-class PreSiteFormController extends GetxController {
+class OnSiteFormController extends GetxController {
   var isLoading = false.obs;
   var images = <String, File?>{}.obs;
   var employeeName = ''.obs;
@@ -21,15 +19,8 @@ class PreSiteFormController extends GetxController {
 
   static final DateTime today = DateTime.now();
   static final String formattedDate = DateTime(today.year, today.month, today.day).toIso8601String().substring(0, 10);
-  final TextEditingController dteName1Controller = TextEditingController();
-  final TextEditingController dteName2Controller = TextEditingController();
-  final TextEditingController riggerName1Controller = TextEditingController();
-  final TextEditingController riggerName2Controller = TextEditingController();
   final TextEditingController siteIdController = TextEditingController();
-  final TextEditingController vehicleNumberController = TextEditingController();
-  final TextEditingController driverNameController = TextEditingController();
-  final TextEditingController kmBeforeController = TextEditingController();
-  final TextEditingController dtrAllocatedKmsController = TextEditingController();
+  final TextEditingController driveCompletionController = TextEditingController();
   final TextEditingController remarksController = TextEditingController();
 
   @override
@@ -50,7 +41,7 @@ class PreSiteFormController extends GetxController {
     }
   }
 
-  Future<void> uploadImageAndData(String siteType, List<String> imageKeys, String collectionName, String taskId, String submitDate) async {
+  Future<void> uploadImageAndData(String siteType, List<String> imageKeys, String collectionName,String taskId, String submitDate) async {
     isLoading.value = true;
     final List<Future<String>> uploadTasks = [];
 
@@ -73,15 +64,6 @@ class PreSiteFormController extends GetxController {
         final docSnapshot = await docRef.get();
 
         final data = {
-          'dteName1': dteName1Controller.text.trim(),
-          'dteName2': dteName2Controller.text.trim(),
-          'riggerName1': riggerName1Controller.text.trim(),
-          'riggerName2': riggerName2Controller.text.trim(),
-          'siteId': siteIdController.text.trim(),
-          'vehicleNumber': vehicleNumberController.text.trim(),
-          'driverName': driverNameController.text.trim(),
-          'kmBefore': kmBeforeController.text.trim(),
-          'dtrAllocatedKms': dtrAllocatedKmsController.text.trim(),
           'remarks': remarksController.text.trim(),
           'Date': submitDate,
           for (int i = 0; i < imageKeys.length; i++)
@@ -93,11 +75,9 @@ class PreSiteFormController extends GetxController {
         } else {
           await docRef.set(data);
         }
-        _resetForm();
-        isLoading.value = false;
         OverlayLoadingProgress.stop();
         _showError("Success", "Data uploaded successfully");
-
+        _resetForm();
       } else {
         _showError("Oops", "User Not logged in");
       }
@@ -123,15 +103,6 @@ class PreSiteFormController extends GetxController {
   }
 
   void _resetForm() {
-    dteName1Controller.clear();
-    dteName2Controller.clear();
-    riggerName1Controller.clear();
-    riggerName2Controller.clear();
-    siteIdController.clear();
-    vehicleNumberController.clear();
-    driverNameController.clear();
-    kmBeforeController.clear();
-    dtrAllocatedKmsController.clear();
     remarksController.clear();
     images.clear();
   }

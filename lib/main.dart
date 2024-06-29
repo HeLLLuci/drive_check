@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drive_check/Screens/PostSite/post_site_form.dart';
 import 'package:drive_check/Screens/login.dart';
-import 'package:drive_check/Screens/on_site_data_screen.dart';
-import 'package:drive_check/Screens/post_site_data_screen.dart';
-import 'package:drive_check/Screens/pre_site_data_screen.dart';
+import 'package:drive_check/Screens/pre_site_form.dart';
 import 'package:drive_check/Screens/update_availability.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:lottie/lottie.dart';
+import 'Screens/OnSite/on_site_form.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -22,6 +23,7 @@ Future<void> main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -43,17 +45,17 @@ class AuthenticationWrapper extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return showLoading();
         } else if (snapshot.hasData) {
           return FutureBuilder<Widget>(
             future: checkStat(snapshot.data!),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
+            builder: (context, futureSnapshot) {
+              if (futureSnapshot.connectionState == ConnectionState.waiting) {
+                return showLoading();
+              } else if (futureSnapshot.hasError) {
+                return Center(child: Text('Error: ${futureSnapshot.error}'));
               } else {
-                return snapshot.data!;
+                return futureSnapshot.data!;
               }
             },
           );
@@ -64,8 +66,6 @@ class AuthenticationWrapper extends StatelessWidget {
     );
   }
 
-
-
   Future<Widget> checkStat(User user) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     String id = user.uid;
@@ -73,15 +73,16 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (doc.exists && doc.data() != null) {
       String state = doc.data()!['state'] ?? 'unknown';
+      String taskId = doc.data()!['taskId'] ?? '';
       switch(state){
         case 'preSite':
-          return PreSiteData();
+          return PreSiteForm(taskId: taskId);
 
         case 'onSite':
-          return OnSiteData();
+          return OnSiteForm(taskId: taskId,);
 
         case 'postSite':
-          return PostSiteData();
+          return PostSiteForm(taskId: taskId);
 
         default:
           return UpdateAvailability();
@@ -90,5 +91,17 @@ class AuthenticationWrapper extends StatelessWidget {
       return Loginscreen();
     }
   }
-}
 
+  Widget showLoading() {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+          width: 100,
+          height: 100,
+          child: Lottie.asset("assets/Animations/loading.json"),
+        ),
+      ),
+    );
+  }
+}

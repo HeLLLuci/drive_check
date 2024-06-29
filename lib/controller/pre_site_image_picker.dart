@@ -1,15 +1,15 @@
+import 'package:drive_check/controller/pre_site_form_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/site_data_controller.dart';
 
-class ImagePickerButton extends StatelessWidget {
+class PreSiteImagePickerButton extends StatelessWidget {
   final String title;
   final String imageKey;
-  const ImagePickerButton({Key? key, required this.title, required this.imageKey}) : super(key: key);
+  const PreSiteImagePickerButton({Key? key, required this.title, required this.imageKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<SiteDataController>();
+    final controller = Get.find<PreSiteFormController>();
 
     return Obx((){
       return GestureDetector(
@@ -26,9 +26,9 @@ class ImagePickerButton extends StatelessWidget {
               child: Row(
                 children: [
                   Image.asset("assets/Images/addimage.png",
-                  width: 40,
-                  height: 40,
-                  fit: BoxFit.cover,),
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,),
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -41,7 +41,7 @@ class ImagePickerButton extends StatelessWidget {
               ),
             ),
             if (controller.images[imageKey] != null)
-                    Image.file(controller.images[imageKey]!, height: 100, width: 100),
+              Image.file(controller.images[imageKey]!, height: 100, width: 100),
           ],
         ),
       );

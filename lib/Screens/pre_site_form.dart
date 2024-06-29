@@ -1,8 +1,11 @@
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
+import 'package:drive_check/controller/pre_site_form_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controller/site_data_controller.dart';
-import '../Widgets/image_picker_button.dart'; // Adjust import path as per your project structure
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:lottie/lottie.dart';
+import 'package:overlay_loading_progress/overlay_loading_progress.dart';
+import '../controller/pre_site_image_picker.dart';
 
 class PreSiteForm extends StatefulWidget {
   final String taskId;
@@ -13,6 +16,7 @@ class PreSiteForm extends StatefulWidget {
 }
 
 class _PreSiteFormState extends State<PreSiteForm> {
+  final List<String> imageKeys = ["DLimg", "firstAid", "startKm", "Selfie from room", "Selfie of DTE with rigger", "Selfie with cab", "Cab RC Photo", "Insurance documents image", "No. Plate of cab", "Handset with holder", "Photo of PPE kit equipments"];
   DateTime? selectedDate;
   String nightActivity = 'Yes';
   String? selectedCircle;
@@ -28,32 +32,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
   List<String> activities = ['DT', 'DT+Audit', 'Audit'];
   List<String> vehicles = ['Commercial Cab', 'Private Cab', 'Public Transport'];
 
-  TextEditingController dteName1Controller = TextEditingController();
-  TextEditingController dteName2Controller = TextEditingController();
-  TextEditingController riggerName1Controller = TextEditingController();
-  TextEditingController riggerName2Controller = TextEditingController();
-  TextEditingController siteIdController = TextEditingController();
-  TextEditingController vehicleTypeController = TextEditingController();
-  TextEditingController vehicleNumberController = TextEditingController();
-  TextEditingController driverNameController = TextEditingController();
-  TextEditingController drivingLicenseImageController = TextEditingController();
-  TextEditingController firstAidImageController = TextEditingController();
-  TextEditingController startKmImageController = TextEditingController();
-  TextEditingController kmBeforeController = TextEditingController(); // New field
-  TextEditingController kmAfterController = TextEditingController(); // New field
-  TextEditingController selfieDTERiggerDriverController = TextEditingController();
-  TextEditingController kmReadingSiteController = TextEditingController();
-  TextEditingController kmReadingSiteReadingController = TextEditingController();
-  TextEditingController raOhsStatusController = TextEditingController();
-  TextEditingController selfieDTERiggerDriverDriveController = TextEditingController();
-  TextEditingController kmReadingDriveCompletionController = TextEditingController();
-  TextEditingController kmReadingDriveCompletionReadingController = TextEditingController();
-  TextEditingController selfieDTERiggerDriverCompletionController = TextEditingController();
-  TextEditingController kmReadingHomeController = TextEditingController();
-  TextEditingController dtrAllocatedKmsController = TextEditingController();
-  TextEditingController remarksController = TextEditingController();
-
-  SiteDataController _controller = Get.put(SiteDataController());
+  PreSiteFormController _controller = Get.put(PreSiteFormController());
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +56,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -134,6 +114,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                               if (pickedDate != null && pickedDate != selectedDate) {
                                 setState(() {
                                   selectedDate = pickedDate;
+                                  _controller.date.value = pickedDate.toString();
                                 });
                               }
                             },
@@ -177,6 +158,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                 ),
               ),
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -187,7 +169,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("DTE Name 1: "),
                       TextFormField(
-                        controller: dteName1Controller,
+                        controller: _controller.dteName1Controller,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -198,7 +180,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("DTE Name 2: "),
                       TextFormField(
-                        controller: dteName2Controller,
+                        controller: _controller.dteName2Controller,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -209,7 +191,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("Rigger Name 1: "),
                       TextFormField(
-                        controller: riggerName1Controller,
+                        controller: _controller.riggerName1Controller,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -220,7 +202,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("Rigger Name 2: "),
                       TextFormField(
-                        controller: riggerName2Controller,
+                        controller: _controller.riggerName2Controller,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -231,7 +213,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("Site ID: "),
                       TextFormField(
-                        controller: siteIdController,
+                        controller: _controller.siteIdController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -244,6 +226,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                 ),
               ),
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -310,6 +293,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                 ),
               ),
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -320,7 +304,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("Vehicle Number: "),
                       TextFormField(
-                        controller: vehicleNumberController,
+                        controller: _controller.vehicleNumberController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -331,7 +315,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("Driver Name: "),
                       TextFormField(
-                        controller: driverNameController,
+                        controller: _controller.driverNameController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -341,17 +325,17 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       ),
                       SizedBox(height: 16),
                       Text("Driving License Image: "),
-                      ImagePickerButton(title: "Driving Licence Image", imageKey: "DLimg"),
+                      PreSiteImagePickerButton(title: "Driving Licence Image", imageKey: imageKeys[0]),
                       SizedBox(height: 16),
                       Text("First aid / Vehicle Fire extinguisher Pic: "),
-                      ImagePickerButton(title: "Upload First Aid / Fire Extinguisher Pic", imageKey: "firstAid"),
+                      PreSiteImagePickerButton(title: "Upload First Aid / Fire Extinguisher Pic", imageKey: imageKeys[1]),
                       SizedBox(height: 16),
                       Text("Start Km image from pick up location: "),
-                      ImagePickerButton(title: "Start Km image from pick up location", imageKey: "startKm"),
+                      PreSiteImagePickerButton(title: "Start Km image from pick up location", imageKey: imageKeys[2]),
                       SizedBox(height: 16),
                       Text("Start Km reading from pick up location: "),
                       TextFormField(
-                        controller: kmBeforeController,
+                        controller: _controller.kmBeforeController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -364,6 +348,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                 ),
               ),
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -373,26 +358,34 @@ class _PreSiteFormState extends State<PreSiteForm> {
                     children: [
                       SizedBox(height: 16),
                       Text("Selfie of DTE with Rigger and Driver in front of Cab showing number Plate from pick up location(In case of public transport, upload selfie from site): "),
-                      ImagePickerButton(title: "Upload Photo", imageKey: "Selfie on site"),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[3]),
                       SizedBox(height: 16),
-                      Text("Km reading image just after reaching at site: "),
-                      ImagePickerButton(title: "Upload Photo", imageKey: "KM reading on site"),
+                      Text("${imageKeys[4]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[4]),
                       SizedBox(height: 16),
-                      Text("Km reading just after reaching at site: "),
-                      TextFormField(
-                        controller: kmReadingSiteReadingController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: 'Enter Km Reading',
-                        ),
-                      ),
+                      Text("${imageKeys[5]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[5]),
+                      SizedBox(height: 16),
+                      Text("${imageKeys[6]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[6]),
+                      SizedBox(height: 16),
+                      Text("${imageKeys[7]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[7]),
+                      SizedBox(height: 16),
+                      Text("${imageKeys[8]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[8]),
+                      SizedBox(height: 16),
+                      Text("${imageKeys[9]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[9]),
+                      SizedBox(height: 16),
+                      Text("${imageKeys[10]}: "),
+                      PreSiteImagePickerButton(title: "Upload Photo", imageKey: imageKeys[10]),
                     ],
                   ),
                 ),
               ),
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -418,28 +411,12 @@ class _PreSiteFormState extends State<PreSiteForm> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 16),
-                      Text("Selfie of DTE with Rigger and Driver during Drive/Audit: "),
-                      ImagePickerButton(title: "Upload Selfie", imageKey: "Selfie of DTE with rigger"),
-                      SizedBox(height: 16),
-                      Text("Km reading image just after drive completion at site: "),
-                      ImagePickerButton(title: "Upload Image", imageKey: "KM at site after drive"),
-                      SizedBox(height: 16),
-                      Text("Km reading just after drive completion at site: "),
-                      TextFormField(
-                        controller: kmReadingDriveCompletionReadingController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: 'Enter Km Reading',
-                        ),
-                      ),
                     ],
                   ),
                 ),
               ),
               Card(
+                color: Colors.white,
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
                 child: Padding(
@@ -448,26 +425,9 @@ class _PreSiteFormState extends State<PreSiteForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 16),
-                      Text("Selfie of DTE with Rigger and Driver after drive completion: "),
-                      ImagePickerButton(title: "Upload Selfie", imageKey: "Selfie of DTE with rigger adn driver after drive completion"),
-                      SizedBox(height: 16),
-                      Text("Km reading image on reaching at home: "),
-                      ImagePickerButton(title: "Upload Image", imageKey: "Km after reaching home"),
-                      SizedBox(height: 16),
-                      Text("Km reading on reaching at home: "),
-                      TextFormField(
-                        controller: kmAfterController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: 'Enter Km Reading',
-                        ),
-                      ),
-                      SizedBox(height: 16),
                       Text("DTR Allocated KMs as per BSP: "),
                       TextFormField(
-                        controller: dtrAllocatedKmsController,
+                        controller: _controller.dtrAllocatedKmsController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -478,7 +438,7 @@ class _PreSiteFormState extends State<PreSiteForm> {
                       SizedBox(height: 16),
                       Text("Remarks (If Any): "),
                       TextFormField(
-                        controller: remarksController,
+                        controller: _controller.remarksController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
@@ -487,6 +447,18 @@ class _PreSiteFormState extends State<PreSiteForm> {
                         ),
                       ),
                       SizedBox(height: 16),
+                      ElevatedButton(onPressed: (){
+                        OverlayLoadingProgress.start(context,
+                          widget: Container(
+                            width: MediaQuery.of(context).size.width / 4,
+                            child: AspectRatio(
+                              aspectRatio: 1,
+                              child: Lottie.asset("assets/Animations/loading.json"),
+                            ),
+                          ),
+                        );
+                        _controller.uploadImageAndData("preSite", imageKeys, "PreSiteData", widget.taskId, selectedDate.toString());
+                      }, child: Text("Submit"))
                     ],
                   ),
                 ),
