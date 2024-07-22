@@ -22,6 +22,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController empIDController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController aadhaarController = TextEditingController();
   String? url;
   bool isObscure = true;
   bool isLoading = false;
@@ -155,6 +156,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         height: 10,
                       ),
                       TextFormField(
+                        controller: aadhaarController,
+                        decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF159757),
+                                ),
+                                borderRadius: BorderRadius.circular(10)),
+                            labelText: "Enter Aadhaar Number",
+                            floatingLabelStyle: TextStyle(
+                                color: Color(0xFF159757)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Color(0xFF159757),
+                                ),
+                                borderRadius: BorderRadius.circular(10))),
+                        keyboardType: TextInputType.emailAddress,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -267,6 +289,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           'Employee Name': nameController.text,
           'Employee ID': empIDController.text,
           'Phone Number': phoneController.text,
+          'Aadhaar Number': aadhaarController.text,
           'Email': emailController.text,
           'Profile Picture': url,
         });

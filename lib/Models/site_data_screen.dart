@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:motion_toast/motion_toast.dart';
 import 'package:slider_button/slider_button.dart';
 import 'package:drive_check/Widgets/image_picker_button.dart';
 import 'package:drive_check/Widgets/text_fields.dart';
 import 'package:drive_check/config/fontsstyles.dart';
-
 import '../controller/site_data_controller.dart';
 
 class SiteDataScreen extends StatelessWidget {
