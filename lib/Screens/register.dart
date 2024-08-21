@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:drive_check/Screens/login.dart';
@@ -7,6 +6,7 @@ import 'package:drive_check/Widgets/Button.dart';
 import 'package:drive_check/config/fontsstyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:motion_toast/motion_toast.dart';
 
@@ -108,7 +108,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Color(0xFF159757),
                                 ),
                                 borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.text,
                       ),
                       SizedBox(
                         height: 10,
@@ -129,7 +129,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Color(0xFF159757),
                                 ),
                                 borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.text,
                       ),
                       SizedBox(
                         height: 10,
@@ -150,7 +150,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Color(0xFF159757),
                                 ),
                                 borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.phone,
                       ),
                       SizedBox(
                         height: 10,
@@ -171,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   color: Color(0xFF159757),
                                 ),
                                 borderRadius: BorderRadius.circular(10))),
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.phone,
                       ),
                       SizedBox(
                         height: 10,
@@ -272,47 +272,42 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   void registerUser(String email, String password) async {
     final FirebaseAuth auth = FirebaseAuth.instance;
-    try {
-      UserCredential userCredential = await auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      String? uid = userCredential.user?.uid;
-      bool collectionExists = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(uid)
-          .get()
-          .then((docSnapshot) => docSnapshot.exists);
-      if (!collectionExists) {
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({});
-      }
-      if (url != null) {
-        await FirebaseFirestore.instance.collection('users').doc(uid).set({
-          'Employee Name': nameController.text,
-          'Employee ID': empIDController.text,
-          'Phone Number': phoneController.text,
-          'Aadhaar Number': aadhaarController.text,
-          'Email': emailController.text,
-          'Profile Picture': url,
-        });
-      }
+    if(email.isNotEmpty && password.isNotEmpty && nameController.text.isNotEmpty && empIDController.text.isNotEmpty && phoneController.text.isNotEmpty && aadhaarController.text.isNotEmpty && emailController.text.isNotEmpty){
+      try {
+        UserCredential userCredential = await auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        String? uid = userCredential.user?.uid;
+          await FirebaseFirestore.instance.collection('users').doc(uid).set({
+            'Employee Name': nameController.text,
+            'Employee ID': empIDController.text,
+            'Phone Number': phoneController.text,
+            'Aadhaar Number': aadhaarController.text,
+            'Email': emailController.text,
+            'Profile Picture': url,
+          });
 
-      setState(() {
-        isLoading = false;
-      });
-      MotionToast.success(
-        title: Text("Success"),
-        description: Text("You have registered successfully. You can now login."),
-      ).show(context);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => Loginscreen()));
-    } catch (e) {
-      print(e);
-      setState(() {
-        isLoading = false;
-      });
-      MotionToast.error(
-          title: Text("Oops!"),
-          description: Text("Something went wrong. Please try again.")
-      ).show(context);
+        setState(() {
+          isLoading = false;
+        });
+        MotionToast.success(
+          title: Text("Success"),
+          description: Text("You have registered successfully. You can now login."),
+        ).show(context);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => Loginscreen()));
+      } catch (e) {
+        print(e);
+        setState(() {
+          isLoading = false;
+        });
+        MotionToast.error(
+            title: Text("Oops!"),
+            description: Text("Something went wrong. Please try again.")
+        ).show(context);
+      }
+    }
+    else{
+      Get.snackbar("Oops!", "All fields are mandatory");
     }
   }
 

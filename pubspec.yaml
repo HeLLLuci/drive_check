@@ -54,6 +54,8 @@ dependencies:
   loading_overlay: ^0.3.0
   lottie: ^3.1.2
   overlay_loading_progress: ^1.0.1
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
   flutter_test:
@@ -82,6 +84,7 @@ flutter:
      - assets/Images/
      - assets/Images/guidelines/
      - assets/Animations/
+     - assets/SVG/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

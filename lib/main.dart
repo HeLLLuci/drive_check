@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:drive_check/New%20Code/Helper/size_config.dart';
+import 'package:drive_check/New%20Code/View/Auth/login.dart';
 import 'package:drive_check/Screens/PostSite/post_site_form.dart';
 import 'package:drive_check/Screens/login.dart';
 import 'package:drive_check/Screens/pre_site_form.dart';
@@ -11,6 +13,7 @@ import 'package:lottie/lottie.dart';
 import 'Screens/OnSite/on_site_form.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:drive_check/New Code/Helper/get_di.dart' as di;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,6 +21,7 @@ Future<void> main() async {
   await FirebaseAppCheck.instance.activate(
     androidProvider: AndroidProvider.playIntegrity,
   );
+  di.init();
   runApp(MyApp());
 }
 
@@ -26,15 +30,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        fontFamily: "Poppins",
-        primaryColor: Color(0xFF4FA457),
-        primarySwatch: Colors.green,
-      ),
-      home: AuthenticationWrapper(),
-    );
+    return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints){
+      return OrientationBuilder(builder: (BuildContext context2, Orientation orientation){
+        SizeConfig.init(constraints, orientation);
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: "Poppins",
+            primaryColor: Color(0xFF4FA457),
+            primarySwatch: Colors.green,
+          ),
+          home: AuthenticationWrapper(),
+        );
+      });
+    });
   }
 }
 
@@ -60,7 +69,7 @@ class AuthenticationWrapper extends StatelessWidget {
             },
           );
         } else {
-          return Loginscreen();
+          return Login();
         }
       },
     );
