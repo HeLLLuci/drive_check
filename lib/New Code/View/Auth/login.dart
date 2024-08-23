@@ -1,3 +1,4 @@
+import 'package:drive_check/Database/both_register_code_raw.dart';
 import 'package:drive_check/New%20Code/Components/Buttons/login_button.dart';
 import 'package:drive_check/New%20Code/Components/login_input.dart';
 import 'package:drive_check/New%20Code/Controller/auth_controller.dart';
@@ -90,6 +91,10 @@ class Login extends StatelessWidget {
                         controller.isLoading.value = true;
                         await controller.loginUser();
                       })),
+              SizedBox(
+                height: 4.0.h,
+              ),
+              TextButton(onPressed: ()=>Get.to(()=>RegisterScreen()), child: Text("Not Registered Yet?"))
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:drive_check/New%20Code/View/availability_page.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -19,9 +20,6 @@ class PostSiteFormController extends GetxController {
 
   static final DateTime today = DateTime.now();
   static final String formattedDate = DateTime(today.year, today.month, today.day).toIso8601String().substring(0, 10);
-  final TextEditingController siteIdController = TextEditingController();
-  final TextEditingController driveCompletionController = TextEditingController();
-  final TextEditingController remarksController = TextEditingController();
 
   @override
   void onInit() {
@@ -64,8 +62,6 @@ class PostSiteFormController extends GetxController {
         final docSnapshot = await docRef.get();
 
         final data = {
-          'remarks': remarksController.text.trim(),
-          'Date': submitDate,
           for (int i = 0; i < imageKeys.length; i++)
             '${imageKeys[i]}URL': imageURLs.length > i ? imageURLs[i] : null,
         };
@@ -77,6 +73,7 @@ class PostSiteFormController extends GetxController {
         }
         OverlayLoadingProgress.stop();
         _showError("Success", "Data uploaded successfully");
+        Get.to(()=>AvailabilityPage(), transition: Transition.fadeIn);
         _resetForm();
       } else {
         _showError("Oops", "User Not logged in");
@@ -103,7 +100,6 @@ class PostSiteFormController extends GetxController {
   }
 
   void _resetForm() {
-    remarksController.clear();
     images.clear();
   }
 

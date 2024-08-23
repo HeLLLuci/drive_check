@@ -1,3 +1,4 @@
+import 'package:drive_check/New%20Code/Helper/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -14,7 +15,7 @@ class OnSiteForm extends StatefulWidget {
 }
 
 class _OnSiteFormState extends State<OnSiteForm> {
-  final List<String> imageKeys = ["Selfie From Site", "Photo wearing PPE kit", "Photo of all equipment", "Photo of Entire Tower", "Photo of Material Required", "Photo after installation", "KM reading image after reaching site", "Selfie of DT with rigger during drive", "KM reading after drive completion", "Selfie after Drive Completion", "POD Photo", "Photo of entire Tower", "Site photo in wide angle", "OHS status Screenshot", "PTW Screenshot", "Photo of full team", "TBT photo"];
+  final List<String> imageKeys = ["Selfie From Site", "PPE Kit Image", "KM Reading", "Company ID",  "Farmtocli", "Safety Passport", "Medical Certificate", "Insurance documents image", "First Aid Certificate", "DL", "RC", "PUC", "OHS SnapShot"];
   DateTime? selectedDate;
 
   OnSiteFormController _controller = Get.put(OnSiteFormController());
@@ -31,7 +32,7 @@ class _OnSiteFormState extends State<OnSiteForm> {
             "On site form",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          subtitle: Text("Fill the form to proceed"),
+          subtitle: Text("Fill the form of audit for on site"),
         ),
       ),
       body: Padding(
@@ -40,72 +41,20 @@ class _OnSiteFormState extends State<OnSiteForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Text("Name"),
               Card(
                 elevation: 4,
                 margin: EdgeInsets.symmetric(vertical: 8),
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Text("Select Date: "),
-                          InkWell(
-                            onTap: () async {
-                              final DateTime? pickedDate = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2020),
-                                lastDate: DateTime(2025),
-                              );
-                              if (pickedDate != null && pickedDate != selectedDate) {
-                                setState(() {
-                                  selectedDate = pickedDate;
-                                  _controller.date.value = pickedDate.toString();
-                                });
-                              }
-                            },
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 40,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: Colors.grey,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              child: Text(selectedDate != null
-                                  ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
-                                  : "Select Date"),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Card(
-                elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text("Site ID: "),
-                      TextFormField(
-                        controller: _controller.siteIdController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: 'Enter Site ID',
-                        ),
-                      ),
-                    ],
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Enter Riggor name 1",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      borderSide: BorderSide(
+                        width: 1.0,
+                        color: greyColor
+                      )
+                    )
                   ),
                 ),
               ),
@@ -180,69 +129,23 @@ class _OnSiteFormState extends State<OnSiteForm> {
                       SizedBox(height: 16),
                       Text("${imageKeys[12]}: "),
                       OnSiteImagePickerButton(title: imageKeys[12], imageKey: imageKeys[12]),
-                      SizedBox(height: 16),
-                      Text("${imageKeys[13]}: "),
-                      OnSiteImagePickerButton(title: imageKeys[13], imageKey: imageKeys[13]),
-                      SizedBox(height: 16),
-                      Text("${imageKeys[14]}: "),
-                      OnSiteImagePickerButton(title: imageKeys[14], imageKey: imageKeys[14]),
-                      SizedBox(height: 16),
-                      Text("${imageKeys[15]}: "),
-                      OnSiteImagePickerButton(title: imageKeys[15], imageKey: imageKeys[15]),
-                      SizedBox(height: 16),
-                      Text("${imageKeys[15]}: "),
-                      OnSiteImagePickerButton(title: imageKeys[15], imageKey: imageKeys[15]),
                     ],
                   ),
                 ),
               ),
-              Card(
-                elevation: 4,
-                margin: EdgeInsets.symmetric(vertical: 8),
-                child: Padding(
-                  padding: EdgeInsets.all(12.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 16),
-                      Text("KM reading after drive completion: "),
-                      TextFormField(
-                        controller: _controller.driveCompletionController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: 'Enter KM reading after drive completion',
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      Text("Remarks (If Any): "),
-                      TextFormField(
-                        controller: _controller.remarksController,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          hintText: 'Enter Remarks',
-                        ),
-                      ),
-                      SizedBox(height: 16),
-                      ElevatedButton(onPressed: (){
-                        OverlayLoadingProgress.start(context,
-                          widget: Container(
-                            width: MediaQuery.of(context).size.width / 4,
-                            child: AspectRatio(
-                              aspectRatio: 1,
-                              child: Lottie.asset("assets/Animations/loading.json"),
-                            ),
-                          ),
-                        );
-                        _controller.uploadImageAndData("preSite", imageKeys, "PreSiteData", widget.taskId, selectedDate.toString());
-                      }, child: Text("Submit"))
-                    ],
+              SizedBox(height: 16),
+              ElevatedButton(onPressed: (){
+                OverlayLoadingProgress.start(context,
+                  widget: Container(
+                    width: MediaQuery.of(context).size.width / 4,
+                    child: AspectRatio(
+                      aspectRatio: 1,
+                      child: Lottie.asset("assets/Animations/loading.json"),
+                    ),
                   ),
-                ),
-              ),
+                );
+                _controller.uploadImageAndData("preSite", imageKeys, "PreSiteData", widget.taskId, selectedDate.toString());
+              }, child: Text("Submit"))
             ],
           ),
         ),

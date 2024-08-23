@@ -1,23 +1,20 @@
-import 'package:drive_check/controller/pre_site_form_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../../Controller/Audit/data_upload_controller.dart';
 
-class PreSiteImagePickerButton extends StatelessWidget {
+class KeyImagePicker extends StatelessWidget {
   final String title;
   final String imageKey;
-
-  const PreSiteImagePickerButton({Key? key, required this.title, required this.imageKey}) : super(key: key);
+  const KeyImagePicker({Key? key, required this.title, required this.imageKey}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.find<PreSiteFormController>();
+    final controller = Get.find<DataUploadController>();
 
     return Obx(() {
       return GestureDetector(
-        onTap: () async {
-        },
+        onTap: () => controller.pickImage(imageKey),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -41,26 +38,15 @@ class PreSiteImagePickerButton extends StatelessWidget {
                       style: TextStyle(fontSize: 16, color: Color(0xFF449C4C)),
                     ),
                   ),
-                  Icon(Icons.cloud_upload, color: Color(0xFF449C4C)),
+                  Icon(
+                    Icons.cloud_upload,
+                    color: Color(0xFF449C4C),
+                  )
                 ],
               ),
             ),
-            SizedBox(height: 8),
             if (controller.images[imageKey] != null)
-              Stack(
-                children: [
-                  Image.file(controller.images[imageKey]!, height: 100, width: 100, fit: BoxFit.cover),
-                  Positioned(
-                    right: 0,
-                    child: IconButton(
-                      icon: Icon(Icons.clear, color: Colors.red),
-                      onPressed: () {
-                        controller.images[imageKey] = null; // Clear the image
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              Image.file(controller.images[imageKey]!, height: 100, width: 100),
           ],
         ),
       );

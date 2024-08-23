@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:drive_check/New%20Code/Helper/size_config.dart';
 import 'package:drive_check/New%20Code/View/Auth/login.dart';
+import 'package:drive_check/New%20Code/View/availability_page.dart';
 import 'package:drive_check/Screens/PostSite/post_site_form.dart';
 import 'package:drive_check/Screens/login.dart';
 import 'package:drive_check/Screens/pre_site_form.dart';
-import 'package:drive_check/Screens/update_availability.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -94,7 +94,7 @@ class AuthenticationWrapper extends StatelessWidget {
           return PostSiteForm(taskId: taskId);
 
         default:
-          return UpdateAvailability();
+          return AvailabilityPage();
       }
     } else {
       return Loginscreen();
