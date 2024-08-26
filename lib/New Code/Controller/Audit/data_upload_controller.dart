@@ -25,6 +25,7 @@ class DataUploadController extends GetxController {
   final TextEditingController rgr1Name = TextEditingController();
   final TextEditingController rgr2Name = TextEditingController();
   final TextEditingController dtrName = TextEditingController();
+  final TextEditingController dtr2Name = TextEditingController();
 
   @override
   void onInit() {

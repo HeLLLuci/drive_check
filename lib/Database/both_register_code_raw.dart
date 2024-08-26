@@ -354,7 +354,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         );
 
         if (smsCode != null) {
-          PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
+          // PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
           await PhoneVerificationCompleted;
         }
       };
